@@ -7,10 +7,10 @@ export class CancelOrderUseCase {
     const orderRepository = OrderContainer.getOrderRepository();
     const order = orderRepository.findById(id);
 
+    if (!order) {
+        throw new Error("Order not found");
+    }
     try {
-        if (!order) {
-            throw new Error("Order not found");
-        }
         order.cancel();
       const orderPersisted = orderRepository.update(order);
       return orderPersisted;

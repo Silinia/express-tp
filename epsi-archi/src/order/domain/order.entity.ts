@@ -3,6 +3,8 @@ import Product from "../../Product/domain/product.entity";
 export default class Order {
   private id: number;
 
+  private static nbOfOrders: number = 0;
+
   private createdAt: Date;
 
   private total: number;
@@ -24,6 +26,8 @@ export default class Order {
       throw new Error("You can't add more than 2 products");
     }
 
+    Order.nbOfOrders += 1;
+    this.id = Order.nbOfOrders;
     this.createdAt = new Date();
     this.customer = customerId;
     this.products = products;
