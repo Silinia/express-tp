@@ -1,5 +1,7 @@
 import { CancelOrderUseCase} from './../../application/cancel-order.usecase';
 import express from "express";
+import { OrderContainer } from "../../order.container";
+
 const router = express.Router();
 
 import { CreateOrderUseCase } from "../../application/create-order.usecase";
@@ -7,8 +9,8 @@ import { PayOrderUseCase } from "../../application/pay-order.usecase";
 import Product from "../../../Product/domain/product.entity";
 
 router.post("", (request, response) => {
-  const customerId = 3;
-  const products = [new Product("Cumcumber", 3.99), new Product("Tomato", 1.99)];
+  const customerId = request.body.customerId;
+  const products = request.body.products;
 
   const createOrderUseCase = new CreateOrderUseCase();
 
@@ -22,8 +24,9 @@ router.post("", (request, response) => {
 
 router.patch("/:orderId/pay", (request, response) => {
   const orderId = parseInt(request.params.orderId);
+  const orderRepository = OrderContainer.getOrderRepository();
 
-  const payOrderUseCase = new PayOrderUseCase();
+  const payOrderUseCase = new PayOrderUseCase(orderRepository);
 
   try {
     const order = payOrderUseCase.payOrder(orderId);

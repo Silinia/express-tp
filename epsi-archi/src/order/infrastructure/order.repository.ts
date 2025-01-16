@@ -1,10 +1,16 @@
 import Order from "../domain/order.entity";
+import OrderRepository from "../domain/order.repository.interface";
 
-export default class OrderRepository {
+export default class OrderRepositoryInMemory implements OrderRepository {
   private orders: Order[] = [];
 
   create(order: Order): Order {
-    this.orders.push(order);
+   const orderWithId = {
+    ...order,
+    id: this.orders.length + 1
+   } as unknown as Order;
+
+    this.orders.push(orderWithId);
 
     return order;
   }

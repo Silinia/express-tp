@@ -1,13 +1,12 @@
 import Order from "../domain/order.entity";
-import OrderRepository from "../infrastructure/order.repository";
-import { OrderContainer } from "../order.container";
+import OrderRepository from "../domain/order.repository.interface";
 
 export class PayOrderUseCase {
 
-    private orderRepository: OrderRepository;
+    private readonly orderRepository: OrderRepository;
 
-    constructor() {
-        this.orderRepository = OrderContainer.getOrderRepository();
+    constructor(orderRepository: OrderRepository) {
+        this.orderRepository = orderRepository;
     }
 
   payOrder(orderId: number): Order {
